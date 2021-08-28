@@ -5,15 +5,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 
+import time
+
 options = Options()
-# options.add_argument('--headless') # headless browser so GUI is not shown
+options.add_argument('--headless') # headless browser so GUI is not shown
 options.add_argument('--incognito')
 driver = webdriver.Chrome(options=options)
 # driver = webdriver.Chrome()
 
+
 url = "https://www.neds.com.au/racing/central-park/0366193e-00c4-4dd3-be97-e0c9ff1de00a"
 driver.get(url)
+time.sleep(3)
 try:
+    
     elem = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "page-content"))
     )
@@ -22,7 +27,6 @@ finally:
     
 
     print(elem)
-    print(elem.is_enabled)
     print(data)
     data_arr = [] 
     for line in data.splitlines():
