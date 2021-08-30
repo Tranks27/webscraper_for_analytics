@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 
 import time
+import csv
 
 options = Options()
 options.add_argument('--headless') # headless browser so GUI is not shown
@@ -32,18 +33,15 @@ finally:
         # print(link.get_attribute('href'))
         links.append(link.get_attribute('href'))
     
-print(links)
-
-
-
+# print(links)
 ###########################################################
-###### Operate on each link
+###### Operate on each link/race
 ###########################################################
 # ranking/results (1st, 2nd, 3rd)
 r1 = []
 r2 = []
 r3 = []
-# Players/runners
+# Players/runners (6 players)
 p1 = []
 p2 = []
 p3 = []
@@ -81,11 +79,12 @@ for url in links:
     # print("end of part1")
     # print(data_arr_part2)
 
-
     count_1st = 0
     count_2nd = 0
     count_3rd = 0
     # data_length = len(data_arr)
+
+    ##### Top 3 ranking's odds
     for i,val in enumerate(data_arr_part1):
         if(val == '1st'):
             count_1st += 1
@@ -108,6 +107,7 @@ for url in links:
             else:
                 print("There has been a tie for one position")
 
+    ##### Players' odds
     for i,val in enumerate(data_arr_part2):
         if('1. ' in val):
             if(data_arr_part2[i+1] == 'SCRATCHED'):
@@ -139,26 +139,24 @@ for url in links:
                 p6.append('-')
             else:
                 p6.append(str(data_arr_part2[i+2])) 
-   
-
-
     
-
-print(r1)
-print(r2)
-print(r3)
-
-print(p1)
-print(p2)
-print(p3)
-print(p4)
-print(p5)
-print(p6)
+    
+   
+# print(r1)
+# print(r2)
+# print(r3)
+# print(p1)
+# print(p2)
+# print(p3)
+# print(p4)
+# print(p5)
+# print(p6)
 
 page = url.split("/")[-2]
-filename = f'{page}.txt'
+filename = f'{page}.csv'
 with open(filename, 'w') as f:
-    f.write("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(r1, r2, r3, p1, p2, p3, p4, p5, p6))
-
+    # f.write("%s\n%s\n%s\n%s\n%s\n%s\n\n%s\n%s\n%s" %(p1, p2, p3, p4, p5, p6, r1, r2, r3))
+    writer = csv.writer(f)
+    writer.writerows([p1, p2, p3, p4, p5, p6, [], r1, r2, r3])
 
 driver.close()
