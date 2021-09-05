@@ -79,7 +79,13 @@ for venue_link in venue_links:
         flag_part2 = False 
         data_arr_part1 = [] 
         data_arr_part2 = []
+        abdn_flag = False
         for line in data.splitlines():
+            if(line == 'Abandoned'):
+                print('I got here')
+                abdn_flag = True
+                break
+
             if not flag_part2:
                 data_arr_part1.append(str(''.join(line)))
             if(line == 'RUNNERS' or flag_part2 == True):
@@ -91,67 +97,80 @@ for venue_link in venue_links:
         # print("end of part1")
         # print(data_arr_part2)
 
-        ## Counters to account for multiple 1st, 2nd or 3rd positions
-        count_1st = 0
-        count_2nd = 0
-        count_3rd = 0
+        # check if the race is abandoned
+        if not abdn_flag:
+            ## Counters to account for multiple 1st, 2nd or 3rd positions
+            count_1st = 0
+            count_2nd = 0
+            count_3rd = 0
 
-        ## Add data for Top 3 ranks' odds
-        for i,val in enumerate(data_arr_part1):
-            if(val == '1st'):
-                count_1st += 1
-                if(count_1st == 3):
-                    r3.append(str(data_arr_part1[i+1][0])) #get the first value of that string
-                elif(count_1st == 2):
-                    r2.append(str(data_arr_part1[i+1][0]))
-                else:
-                    r1.append(str(data_arr_part1[i+1][0])) 
-            elif(val == '2nd'):
-                count_2nd += 1
-                if(count_2nd == 2):
-                    r3.append(str(data_arr_part1[i+1][0])) #get the first value of that string
-                else:
-                    r2.append(str(data_arr_part1[i+1][0]))
-            elif(val == '3rd'):
-                count_3rd += 1
-                if(count_1st + count_2nd < 3 and count_3rd == 1):
-                    r3.append(str(data_arr_part1[i+1][0]))
-                else:
-                    print("There has been a tie for one position")
+            ## Add data for Top 3 ranks' odds
+            for i,val in enumerate(data_arr_part1):
+                if(val == '1st'):
+                    count_1st += 1
+                    if(count_1st == 3):
+                        r3.append(str(data_arr_part1[i+1][0])) #get the first value of that string
+                    elif(count_1st == 2):
+                        r2.append(str(data_arr_part1[i+1][0]))
+                    else:
+                        r1.append(str(data_arr_part1[i+1][0])) 
+                elif(val == '2nd'):
+                    count_2nd += 1
+                    if(count_2nd == 2):
+                        r3.append(str(data_arr_part1[i+1][0])) #get the first value of that string
+                    else:
+                        r2.append(str(data_arr_part1[i+1][0]))
+                elif(val == '3rd'):
+                    count_3rd += 1
+                    if(count_1st + count_2nd < 3 and count_3rd == 1):
+                        r3.append(str(data_arr_part1[i+1][0]))
+                    else:
+                        print("There has been a tie for one position")
 
-        ## Add data for all 6 players' odds
-        for i,val in enumerate(data_arr_part2):
-            if('1. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
-                    p1.append('-')
-                else:
-                    p1.append(str(data_arr_part2[i+2])) #get the first value of that string
-            elif('2. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
-                    p2.append('-')
-                else:
-                    p2.append(str(data_arr_part2[i+2])) 
-            elif('3. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
-                    p3.append('-')
-                else:
-                    p3.append(str(data_arr_part2[i+2])) 
-            elif('4. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
-                    p4.append('-')
-                else:
-                    p4.append(str(data_arr_part2[i+2])) 
-            elif('5. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
-                    p5.append('-')
-                else:
-                    p5.append(str(data_arr_part2[i+2])) 
-            elif('6. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
-                    p6.append('-')
-                else:
-                    p6.append(str(data_arr_part2[i+2])) 
-    
+            ## Add data for all 6 players' odds
+            for i,val in enumerate(data_arr_part2):
+                if('1. ' in val):
+                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                        p1.append('-')
+                    else:
+                        p1.append(str(data_arr_part2[i+2])) #get the first value of that string
+                elif('2. ' in val):
+                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                        p2.append('-')
+                    else:
+                        p2.append(str(data_arr_part2[i+2])) 
+                elif('3. ' in val):
+                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                        p3.append('-')
+                    else:
+                        p3.append(str(data_arr_part2[i+2])) 
+                elif('4. ' in val):
+                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                        p4.append('-')
+                    else:
+                        p4.append(str(data_arr_part2[i+2])) 
+                elif('5. ' in val):
+                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                        p5.append('-')
+                    else:
+                        p5.append(str(data_arr_part2[i+2])) 
+                elif('6. ' in val):
+                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                        p6.append('-')
+                    else:
+                        p6.append(str(data_arr_part2[i+2])) 
+        else:
+            r1.append('-')
+            r2.append('-')
+            r3.append('-')
+            p1.append('-')
+            p2.append('-')
+            p3.append('-')
+            p4.append('-')
+            p5.append('-')
+            p6.append('-')
+            abdn_flag = False
+
     ## If there are less than 12 races at a venue, fill in the blanks with '-'
     complete_data = [r1, r2, r3, p1, p2, p3, p4, p5, p6]
     print(complete_data)
