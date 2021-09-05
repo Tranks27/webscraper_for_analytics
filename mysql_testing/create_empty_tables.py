@@ -21,204 +21,53 @@ try:
             cursor.execute("SELECT database();")
             record = cursor.fetchone()
             print("Your are connected to database: ", record)
-            cursor.execute("DROP TABLE IF EXISTS race_results;")
-            print("Creating table")
-            cursor.execute("CREATE TABLE race_results(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
+            
+            # print("Creating table")
+            # cursor.execute("CREATE TABLE race_results(R1 CHAR(5),\
+			# 			  R2 CHAR(5),\
+            #               R3 CHAR(5),\
+			# 			  R4 CHAR(5),\
+            #               R5 CHAR(5),\
+			# 			  R6 CHAR(5),\
+            #               R7 CHAR(5),\
+			# 			  R8 CHAR(5),\
+            #               R9 CHAR(5),\
+			# 			  R10 CHAR(5),\
+            #               R11 CHAR(5),\
+			# 			  R12 CHAR(5));")
+            # print("Table is created.....")
 
-            print("Creating table")
-            cursor.execute("CREATE TABLE central_park_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
+            venues = ['belle_vue','belle_vue_bags','central_park','central_park_bags',\
+                        'crayford', 'crayford_bags',\
+                        'doncaster','doncaster_bags','harlow','harlow_bags',\
+                        'henlow','henlow_bags','hove','hove_bags',\
+                        'kinsley','kinsley_bags','monmore','monmore_bags',\
+                        'newcastle','newcastle_bags','nottingham','nottingham_bags',\
+                        'perry_barr','perry_barr_bags','romford','romford_bags',\
+                        'sheffield','sheffield_bags','sunderland','sunderland_bags',\
+                        'swindon','swindon_bags','yarmouth','yarmouth_bags',\
+                        'pelaw_grange','pelaw_grange_bags','towcester','towcester_bags']
+            print(venues)
+            for venue in venues:
+                cursor.execute(f'DROP TABLE IF EXISTS {venue};')
+                print("Creating table")
+                cursor.execute(f'CREATE TABLE {venue}(R1 CHAR(5),\
+                            R2 CHAR(5),\
+                            R3 CHAR(5),\
+                            R4 CHAR(5),\
+                            R5 CHAR(5),\
+                            R6 CHAR(5),\
+                            R7 CHAR(5),\
+                            R8 CHAR(5),\
+                            R9 CHAR(5),\
+                            R10 CHAR(5),\
+                            R11 CHAR(5),\
+                            R12 CHAR(5));')
+                print("Table is created.....")
 
-            print("Creating table")
-            cursor.execute("CREATE TABLE crayford(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
+            
 
-            print("Creating table")
-            cursor.execute("CREATE TABLE hove(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE kingsley_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE monmore(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE newcastle_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE perry_barr_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE romford_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE sheffield_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE sunderland_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE towcester(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-
-            print("Creating table")
-            cursor.execute("CREATE TABLE towcester_bags(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
+            
             # for i,row in csvData.iterrows():
             #     if NaN in row:
             #         print(row)

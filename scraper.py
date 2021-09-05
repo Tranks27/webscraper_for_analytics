@@ -14,6 +14,7 @@ options.add_argument('--incognito')
 driver = webdriver.Chrome(options=options)
 # driver = webdriver.Chrome()
 filename = "New_data.csv"
+open(filename,'w').close() #clear contents of the file
 links_filename = 'venue_links.txt'
 
 
@@ -21,6 +22,7 @@ links_filename = 'venue_links.txt'
 with open(links_filename, 'r') as f:
     venue_links = f.readlines()
 print(f'...Venue links imported from {links_filename}')
+open(links_filename,'w').close() #clear contents of the file
 
 venue_count = 0
 for venue_link in venue_links:

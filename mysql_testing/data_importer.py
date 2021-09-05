@@ -14,7 +14,7 @@ def is_float(str):
 def main():
     # Read data into a variable
     csvData = pd.read_csv('/home/tranks/scrapeBySelenium/webscraper_for_analytics/New_data.csv', delimiter=',')
-    print(csvData)
+    # print(csvData)
     try:
         with connect(
             host="localhost",
@@ -36,9 +36,12 @@ def main():
                     # Check for the venue_name headers
                     if not row[0].isdigit() and not is_float(row[0]):
                         data = csvData.iloc[i+1:i+10]
+                        print(data)
                         for i,r in data.iterrows():
-                            cursor.execute(f'INSERT INTO {row[0]} VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', tuple(r))
-
+                            try:
+                                cursor.execute(f'INSERT INTO {row[0]} VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', tuple(r))
+                            except Error as e:
+                                print(e)
                 connection.commit()
     except Error as e:
         print(e)
