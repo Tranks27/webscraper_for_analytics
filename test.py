@@ -20,9 +20,6 @@ with open('venue_links.txt', 'r') as f:
     venue_links = f.readlines()
 
 for venue_link in venue_links:
-    
-
-
 
 ###########################################################
 ###### Get the links to all 12 races at a venue

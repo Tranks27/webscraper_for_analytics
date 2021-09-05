@@ -13,11 +13,15 @@ options.add_argument('--headless') # headless browser so GUI is not shown
 options.add_argument('--incognito')
 driver = webdriver.Chrome(options=options)
 # driver = webdriver.Chrome()
-filename = "New data.csv"
+filename = "New_data.csv"
+links_filename = 'venue_links.txt'
+
 
 # Read the links from the venue_links.txt and store them
-with open('venue_links.txt', 'r') as f:
+with open(links_filename, 'r') as f:
     venue_links = f.readlines()
+print(f'...Venue links imported from {links_filename}')
+
 
 for venue_link in venue_links:
     ###########################################################
@@ -27,19 +31,19 @@ for venue_link in venue_links:
     driver.get(venue_link)
     time.sleep(2)
     try:
-        
+        # Wait for 10 secs or until elementID "page-content" is loaded on the page
         elem = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "page-content"))
         )
     finally:
-        contents = elem.find_elements_by_class_name('race-switcher-list__link')
+        data = elem.find_elements_by_class_name('race-switcher-list__link')
         race_links = []
-        for race_link in contents:
+        for race_link in data:
             # print(link.get_attribute('innerHTML'))
             # print(race_link.get_attribute('href'))
             race_links.append(race_link.get_attribute('href'))
-            
-    print("NEXT Venue--------------------------\n")
+    print("...Downloaded race links from current venue ")        
+    
     ###########################################################
     ###### Operate on each link/race
     ###########################################################
@@ -67,9 +71,8 @@ for venue_link in venue_links:
         finally:
             data = elem.text
             
-        flag_part2 = False
-        # print(elem)
-        # print(data)
+        ## Divide up the data into two parts (rankings and players)
+        flag_part2 = False 
         data_arr_part1 = [] 
         data_arr_part2 = []
         for line in data.splitlines():
@@ -84,12 +87,12 @@ for venue_link in venue_links:
         # print("end of part1")
         # print(data_arr_part2)
 
+        ## Counters to account for multiple 1st, 2nd or 3rd positions
         count_1st = 0
         count_2nd = 0
         count_3rd = 0
-        # data_length = len(data_arr)
 
-        ##### Add data for Top 3 ranks' odds
+        ## Add data for Top 3 ranks' odds
         for i,val in enumerate(data_arr_part1):
             if(val == '1st'):
                 count_1st += 1
@@ -112,38 +115,45 @@ for venue_link in venue_links:
                 else:
                     print("There has been a tie for one position")
 
-        ##### Add data for all 6 players' odds
+        ## Add data for all 6 players' odds
         for i,val in enumerate(data_arr_part2):
             if('1. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED'):
+                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                     p1.append('-')
                 else:
                     p1.append(str(data_arr_part2[i+2])) #get the first value of that string
             elif('2. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED'):
+                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                     p2.append('-')
                 else:
                     p2.append(str(data_arr_part2[i+2])) 
             elif('3. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED'):
+                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                     p3.append('-')
                 else:
                     p3.append(str(data_arr_part2[i+2])) 
             elif('4. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED'):
+                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                     p4.append('-')
                 else:
                     p4.append(str(data_arr_part2[i+2])) 
             elif('5. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED'):
+                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                     p5.append('-')
                 else:
                     p5.append(str(data_arr_part2[i+2])) 
             elif('6. ' in val):
-                if(data_arr_part2[i+1] == 'SCRATCHED'):
+                if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                     p6.append('-')
                 else:
                     p6.append(str(data_arr_part2[i+2])) 
+    
+    ## If there are less than 12 races at a venue, fill in the blanks with '-'
+    complete_data = [r1, r2, r3, p1, p2, p3, p4, p5, p6]
+    print(complete_data)
+    for i in complete_data:
+        while len(i) != 12:
+            i.append('-')
     
     # print(r1)
     # print(r2)
@@ -158,6 +168,7 @@ for venue_link in venue_links:
     # page = url.split("/")[-2]
     # filename = f'{page}.csv'
     
+    ## Write/Append the current venue's data into the file
     with open(filename, 'a+') as f:
         # f.write("%s\n%s\n%s\n%s\n%s\n%s\n\n%s\n%s\n%s" %(p1, p2, p3, p4, p5, p6, r1, r2, r3))
         writer = csv.writer(f)
@@ -168,6 +179,7 @@ for venue_link in venue_links:
         if len(data) > 0:
             f.write("\n")
    
-        writer.writerows([p1, p2, p3, p4, p5, p6, [], r1, r2, r3])
+        writer.writerows([p1, p2, p3, p4, p5, p6, r1, r2, r3])
 
+    print("Going to the NEXT Venue--------------------------\n")
 driver.close()
