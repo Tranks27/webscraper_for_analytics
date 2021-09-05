@@ -29,7 +29,7 @@ for venue_link in venue_links:
     ###### Get the links to all 12 races at a venue
     ###########################################################
     venue_name = venue_link.split("/")[-2] # Get venue name from the url
-    venue_name = venue_name.replace('-',' ')
+    venue_name = venue_name.replace('-','_')
 
     # url = "https://www.neds.com.au/racing/central-park-bags/7567831f-f219-41ee-8a1c-cb2a1e03d451"
     driver.get(venue_link)
@@ -185,7 +185,7 @@ for venue_link in venue_links:
         else:
             writer.writerow(['R1','R2','R3','R4','R5','R6',\
                             'R7','R8','R9','R10','R11','R12'])
-        writer.writerow([venue_name])
+        writer.writerow([venue_name,'-','-','-','-','-','-','-','-','-','-','-'])
         writer.writerows([p1, p2, p3, p4, p5, p6, r1, r2, r3])
 
     print("Going to the NEXT Venue--------------------------\n")

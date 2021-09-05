@@ -3,43 +3,47 @@ import csv
 from mysql.connector import connect, Error
 import pandas as pd
 
-# Read data into a variable
-csvData = pd.read_csv('/home/tranks/scrapeBySelenium/webscraper_for_analytics/New_data.csv', delimiter=',')
+# def data_channeller(row, )
+def is_float(str):
+    try:
+        float(str)
+        return True
+    except ValueError:
+        return False
 
-try:
-    with connect(
-        host="localhost",
-        # user=input("Enter username: "),
-        # password=getpass("Enter password: "),
-        user='root',
-        password='12345',
-        database = "test"
-    ) as connection:
-        print(connection)
+def main():
+    # Read data into a variable
+    csvData = pd.read_csv('/home/tranks/scrapeBySelenium/webscraper_for_analytics/New_data.csv', delimiter=',')
+    print(csvData)
+    try:
+        with connect(
+            host="localhost",
+            # user=input("Enter username: "),
+            # password=getpass("Enter password: "),
+            user='root',
+            password='12345',
+            database = "test"
+        ) as connection:
+            print(connection)
 
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT database();")
-            record = cursor.fetchone()
-            print("Your are connected to database: ", record)
-            cursor.execute("DROP TABLE IF EXISTS race_results;")
-            print("Creating table")
-            cursor.execute("CREATE TABLE race_results(R1 CHAR(5),\
-						  R2 CHAR(5),\
-                          R3 CHAR(5),\
-						  R4 CHAR(5),\
-                          R5 CHAR(5),\
-						  R6 CHAR(5),\
-                          R7 CHAR(5),\
-						  R8 CHAR(5),\
-                          R9 CHAR(5),\
-						  R10 CHAR(5),\
-                          R11 CHAR(5),\
-						  R12 CHAR(5));")
-            print("Table is created.....")
-            # for i,row in csvData.iterrows():
-            #     if NaN in row:
-            #         print(row)
-            #         cursor.execute("INSERT INTO race_results VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", tuple(row))
-            connection.commit()
-except Error as e:
-    print(e)
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT database();")
+                record = cursor.fetchone()
+                print("Your are connected to database: ", record)
+
+                ## Import the data into their respective venue tables
+                for i,row in csvData.iterrows():
+                    # Check for the venue_name headers
+                    if not row[0].isdigit() and not is_float(row[0]):
+                        data = csvData.iloc[i+1:i+10]
+                        for i,r in data.iterrows():
+                            cursor.execute(f'INSERT INTO {row[0]} VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', tuple(r))
+
+                connection.commit()
+    except Error as e:
+        print(e)
+
+
+
+if __name__ == '__main__':
+    main()
