@@ -22,11 +22,15 @@ with open(links_filename, 'r') as f:
     venue_links = f.readlines()
 print(f'...Venue links imported from {links_filename}')
 
-
+venue_count = 0
 for venue_link in venue_links:
+    venue_count += 1
     ###########################################################
     ###### Get the links to all 12 races at a venue
     ###########################################################
+    venue_name = venue_link.split("/")[-2] # Get venue name from the url
+    venue_name = venue_name.replace('-',' ')
+
     # url = "https://www.neds.com.au/racing/central-park-bags/7567831f-f219-41ee-8a1c-cb2a1e03d451"
     driver.get(venue_link)
     time.sleep(2)
@@ -42,7 +46,7 @@ for venue_link in venue_links:
             # print(link.get_attribute('innerHTML'))
             # print(race_link.get_attribute('href'))
             race_links.append(race_link.get_attribute('href'))
-    print("...Downloaded race links from current venue ")        
+    print(f'...Downloaded race links from Venue{venue_count}: {venue_name} ')        
     
     ###########################################################
     ###### Operate on each link/race
@@ -178,7 +182,10 @@ for venue_link in venue_links:
         data = f.read(10)
         if len(data) > 0:
             f.write("\n")
-   
+        else:
+            writer.writerow(['R1','R2','R3','R4','R5','R6',\
+                            'R7','R8','R9','R10','R11','R12'])
+        writer.writerow([venue_name])
         writer.writerows([p1, p2, p3, p4, p5, p6, r1, r2, r3])
 
     print("Going to the NEXT Venue--------------------------\n")
