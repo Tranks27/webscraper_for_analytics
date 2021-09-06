@@ -1,3 +1,3 @@
 # webscraper_for_analytics
-Uses Selenium
+Uses Selenium, Python and MySQL
 
