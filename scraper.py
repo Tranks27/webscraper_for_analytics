@@ -84,7 +84,6 @@ for venue_link in venue_links:
         abdn_flag = False
         for line in data.splitlines():
             if(line == 'Abandoned'):
-                print('I got here')
                 abdn_flag = True
                 break
 
