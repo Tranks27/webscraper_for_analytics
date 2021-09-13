@@ -28,31 +28,71 @@ try:
 	                        FROM testing_data_online_movie_rating\
 	                        LIMIT {selected_row},9;')
             result = pd.DataFrame(cursor.fetchall())
+            # print(result.to_numpy())
             result_np = result.to_numpy().transpose() #transpose the matrix so that each row contains each race's data
-
-            # print(result)
+            # for i in result_np:
+            # result_np = list(result_np)
+            
             print(result_np)
-
-            ## Odds by ranking
-            rank1_odds = result_np[0][int(result_np[0][6]) - 1]
-            rank2_odds = result_np[0][int(result_np[0][7]) - 1]
-            rank3_odds = result_np[0][int(result_np[0][8]) - 1]
-            print(f'rank123_odds: {rank1_odds}, {rank2_odds}, {rank3_odds}')
-            # print(f'here: {result_np[int(result_np[8][0]) - 1][0]}')
-
-            ## Odds of the first 3 favorites 
-            lowest1_odds = sorted(result_np[0][:5])[0] #comparison between the first 6 players' odds
-            lowest2_odds = sorted(result_np[0][:5])[1]
-            lowest3_odds = sorted(result_np[0][:5])[2]
-            print(f'lowest123_odds: {lowest1_odds}, {lowest2_odds}, {lowest3_odds}')
+            # result_np = np.array2string(result_np, separator=',')
 
             stra1_cnts = np.zeros((6,), dtype=int)
-            stra2_cnts = np.zeros((5,6), dtype=int)
+            stra2_cnts = np.zeros((6,), dtype=int)
             stra3_cnts = np.zeros((5,6), dtype=int)
+            stra4_cnts = np.zeros((5,6), dtype=int)
+
+            result_np = np.where(result_np == '-', 'inf', result_np)
+            
+            # print("after")
+            # print(result_np)
+
+            for race_i,current_race in enumerate(result_np):
+                print(race_i)
+                print(current_race)
+                dash_count = np.count_nonzero(current_race == 'inf')
+                if dash_count == 9:
+                    print("Abandoned race found! Skip!!!")
+                    # result_np = np.delete(result_np, race_i, 0)
+                else:
+                    ## Odds by ranking
+                    rank1_odds = result_np[race_i][int(result_np[race_i][6]) - 1]
+                    rank2_odds = result_np[race_i][int(result_np[race_i][7]) - 1]
+                    rank3_odds = result_np[race_i][int(result_np[race_i][8]) - 1]
+                    print(f'rank123_odds: {rank1_odds}, {rank2_odds}, {rank3_odds}')
+
+                    ## Odds of the first 3 favorites 
+                    sorted_odds = sorted(result_np[race_i][:6], key=float) #comparison between the first 6 players' odds
+                    print(f'sorted odds = {sorted_odds}')
+                    lowest1_odds = sorted_odds[0] 
+                    lowest2_odds = sorted_odds[1]
+                    lowest3_odds = sorted_odds[2]
+                    lowest4_odds = sorted_odds[3]
+                    lowest5_odds = sorted_odds[4]
+                    lowest6_odds = sorted_odds[5]
+                    print(f'lowest123_odds: {lowest1_odds}, {lowest2_odds}, {lowest3_odds},{lowest4_odds}, {lowest5_odds}, {lowest6_odds}')
+
+                    if(lowest1_odds == rank1_odds):
+                        stra1_cnts[0] = stra1_cnts[0] + 1
+                    elif(lowest2_odds == rank1_odds):
+                        stra1_cnts[1] = stra1_cnts[1] + 1
+                    elif(lowest3_odds == rank1_odds):
+                        stra1_cnts[2] = stra1_cnts[2] + 1
+                    elif(lowest4_odds == rank1_odds):
+                        stra1_cnts[3] = stra1_cnts[3] + 1
+                    elif(lowest5_odds == rank1_odds):
+                        stra1_cnts[4] = stra1_cnts[4] + 1
+                    elif(lowest6_odds == rank1_odds):
+                        stra1_cnts[5] = stra1_cnts[5] + 1
 
             print(f'Strategy 1: \n{stra1_cnts}\n')
             print(f'Strategy 2: \n{stra2_cnts}\n')
             print(f'Strategy 3: \n{stra3_cnts}\n')
+            print(f'Strategy 4: \n{stra4_cnts}\n')
+
+
+            
+
+
             connection.commit()
 except Error as e:
     print(e)
