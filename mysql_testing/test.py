@@ -3,6 +3,7 @@ from mysql.connector import connect, Error
 import pandas as pd
 import numpy as np
 
+import csv
 # Read data into a variable
 # csvData = pd.read_csv('/home/tranks/scrapeBySelenium/webscraper_for_analytics/New_data.csv', delimiter=',')
 
@@ -36,11 +37,14 @@ try:
             print(result_np)
             # result_np = np.array2string(result_np, separator=',')
 
+            # Variables to store counts
             stra1_cnts = np.zeros((6,), dtype=int)
             stra2_cnts = np.zeros((6,), dtype=int)
-            stra3_cnts = np.zeros((5,6), dtype=int)
+            stra3_cnts = np.zeros((6,), dtype=int)
             stra4_cnts = np.zeros((5,6), dtype=int)
+            stra5_cnts = np.zeros((5,6), dtype=int)
 
+            # Replace '-' with 'inf' since '-' is not float and thus can't be sorted() and min()
             result_np = np.where(result_np == '-', 'inf', result_np)
             
             # print("after")
@@ -50,7 +54,10 @@ try:
                 print(race_i)
                 print(current_race)
                 dash_count = np.count_nonzero(current_race == 'inf')
-                if dash_count == 9:
+
+                # Skip if abandoned race
+                # 9 '-'s mean whole race is abandoned, not just player scratching 
+                if dash_count == 9: 
                     print("Abandoned race found! Skip!!!")
                     # result_np = np.delete(result_np, race_i, 0)
                 else:
@@ -71,26 +78,54 @@ try:
                     lowest6_odds = sorted_odds[5]
                     print(f'lowest123_odds: {lowest1_odds}, {lowest2_odds}, {lowest3_odds},{lowest4_odds}, {lowest5_odds}, {lowest6_odds}')
 
-                    if(lowest1_odds == rank1_odds):
+                    ## Strategy 1: Who wins?
+                    if(rank1_odds == lowest1_odds):
                         stra1_cnts[0] = stra1_cnts[0] + 1
-                    elif(lowest2_odds == rank1_odds):
+                    if(rank1_odds == lowest2_odds):
                         stra1_cnts[1] = stra1_cnts[1] + 1
-                    elif(lowest3_odds == rank1_odds):
+                    if(rank1_odds == lowest3_odds):
                         stra1_cnts[2] = stra1_cnts[2] + 1
-                    elif(lowest4_odds == rank1_odds):
+                    if(rank1_odds == lowest4_odds):
                         stra1_cnts[3] = stra1_cnts[3] + 1
-                    elif(lowest5_odds == rank1_odds):
+                    if(rank1_odds == lowest5_odds):
                         stra1_cnts[4] = stra1_cnts[4] + 1
-                    elif(lowest6_odds == rank1_odds):
+                    if(rank1_odds == lowest6_odds):
                         stra1_cnts[5] = stra1_cnts[5] + 1
+
+                    ## Strategy 2: Who's second?
+                    if(rank2_odds == lowest1_odds):
+                        stra2_cnts[0] = stra2_cnts[0] + 1
+                    if(rank2_odds == lowest2_odds):
+                        stra2_cnts[1] = stra2_cnts[1] + 1
+                    if(rank2_odds == lowest3_odds):
+                        stra2_cnts[2] = stra2_cnts[2] + 1
+                    if(rank2_odds == lowest4_odds):
+                        stra2_cnts[3] = stra2_cnts[3] + 1
+                    if(rank2_odds == lowest5_odds):
+                        stra2_cnts[4] = stra2_cnts[4] + 1
+                    if(rank2_odds == lowest6_odds):
+                        stra2_cnts[5] = stra2_cnts[5] + 1
+
+                    ## Strategy 3: Who's third?
+                    if(rank3_odds == lowest1_odds):
+                        stra3_cnts[0] = stra3_cnts[0] + 1
+                    if(rank3_odds == lowest2_odds):
+                        stra3_cnts[1] = stra3_cnts[1] + 1
+                    if(rank3_odds == lowest3_odds):
+                        stra3_cnts[2] = stra3_cnts[2] + 1
+                    if(rank3_odds == lowest4_odds):
+                        stra3_cnts[3] = stra3_cnts[3] + 1
+                    if(rank3_odds == lowest5_odds):
+                        stra3_cnts[4] = stra3_cnts[4] + 1
+                    if(rank3_odds == lowest6_odds):
+                        stra3_cnts[5] = stra3_cnts[5] + 1
 
             print(f'Strategy 1: \n{stra1_cnts}\n')
             print(f'Strategy 2: \n{stra2_cnts}\n')
             print(f'Strategy 3: \n{stra3_cnts}\n')
-            print(f'Strategy 4: \n{stra4_cnts}\n')
-
-
-            
+            # print(f'Strategy 4: \n{stra4_cnts}\n')
+            # print(f'Strategy 4: \n{stra4_cnts}\n')
+                
 
 
             connection.commit()
