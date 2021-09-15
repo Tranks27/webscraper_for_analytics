@@ -41,8 +41,9 @@ try:
             stra1_cnts = np.zeros((6,), dtype=int)
             stra2_cnts = np.zeros((6,), dtype=int)
             stra3_cnts = np.zeros((6,), dtype=int)
-            stra4_cnts = np.zeros((5,6), dtype=int)
-            stra5_cnts = np.zeros((5,6), dtype=int)
+            stra4_cnts = np.zeros((6,5), dtype=int)
+            stra5_cnts = np.zeros((6,5), dtype=int)
+            num_players = 6
 
             # Replace '-' with 'inf' since '-' is not float and thus can't be sorted() and min()
             result_np = np.where(result_np == '-', 'inf', result_np)
@@ -68,7 +69,9 @@ try:
                     print(f'rank123_odds: {rank1_odds}, {rank2_odds}, {rank3_odds}')
 
                     ## Odds of the first 3 favorites 
-                    sorted_odds = sorted(result_np[race_i][:6], key=float) #comparison between the first 6 players' odds
+                    original_odds = result_np[race_i][:6]
+                    print(f'original odds = {original_odds}')
+                    sorted_odds = sorted(original_odds, key=float) #comparison between the first 6 players' odds
                     print(f'sorted odds = {sorted_odds}')
                     lowest1_odds = sorted_odds[0] 
                     lowest2_odds = sorted_odds[1]
@@ -76,9 +79,11 @@ try:
                     lowest4_odds = sorted_odds[3]
                     lowest5_odds = sorted_odds[4]
                     lowest6_odds = sorted_odds[5]
-                    print(f'lowest123_odds: {lowest1_odds}, {lowest2_odds}, {lowest3_odds},{lowest4_odds}, {lowest5_odds}, {lowest6_odds}')
-
+                    # print(f'lowest123_odds: {lowest1_odds}, {lowest2_odds}, {lowest3_odds},{lowest4_odds}, {lowest5_odds}, {lowest6_odds}')
+                    
+                    ###########################################
                     ## Strategy 1: Who wins?
+                    ###########################################
                     if(rank1_odds == lowest1_odds):
                         stra1_cnts[0] = stra1_cnts[0] + 1
                     if(rank1_odds == lowest2_odds):
@@ -92,7 +97,9 @@ try:
                     if(rank1_odds == lowest6_odds):
                         stra1_cnts[5] = stra1_cnts[5] + 1
 
+                    ###########################################
                     ## Strategy 2: Who's second?
+                    ###########################################
                     if(rank2_odds == lowest1_odds):
                         stra2_cnts[0] = stra2_cnts[0] + 1
                     if(rank2_odds == lowest2_odds):
@@ -106,7 +113,9 @@ try:
                     if(rank2_odds == lowest6_odds):
                         stra2_cnts[5] = stra2_cnts[5] + 1
 
+                    ###########################################
                     ## Strategy 3: Who's third?
+                    ###########################################
                     if(rank3_odds == lowest1_odds):
                         stra3_cnts[0] = stra3_cnts[0] + 1
                     if(rank3_odds == lowest2_odds):
@@ -120,11 +129,151 @@ try:
                     if(rank3_odds == lowest6_odds):
                         stra3_cnts[5] = stra3_cnts[5] + 1
 
+                    ###########################################
+                    ## Strategy 4: forecast based on odds
+                    ###########################################
+                    if(rank1_odds == sorted_odds[0]):     # fav wins
+                        if(rank2_odds == sorted_odds[1]): # check who comes after
+                            stra4_cnts[0][0] = stra4_cnts[0][0] + 1
+                        elif(rank2_odds == sorted_odds[2]):
+                            stra4_cnts[0][1] = stra4_cnts[0][1] + 1
+                        elif(rank2_odds == sorted_odds[3]):
+                            stra4_cnts[0][2] = stra4_cnts[0][2] + 1
+                        elif(rank2_odds == sorted_odds[4]):
+                            stra4_cnts[0][3] = stra4_cnts[0][3] + 1
+                        elif(rank2_odds == sorted_odds[5]):
+                            stra4_cnts[0][4] = stra4_cnts[0][4] + 1
+                    elif(rank1_odds == sorted_odds[1]):   # 2nd fav wins
+                        if(rank2_odds == sorted_odds[0]):
+                            stra4_cnts[1][0] = stra4_cnts[1][0] + 1
+                        elif(rank2_odds == sorted_odds[2]):
+                            stra4_cnts[1][1] = stra4_cnts[1][1] + 1
+                        elif(rank2_odds == sorted_odds[3]):
+                            stra4_cnts[1][2] = stra4_cnts[1][2] + 1
+                        elif(rank2_odds == sorted_odds[4]):
+                            stra4_cnts[1][3] = stra4_cnts[1][3] + 1
+                        elif(rank2_odds == sorted_odds[5]):
+                            stra4_cnts[1][4] = stra4_cnts[1][4] + 1
+                    elif(rank1_odds == sorted_odds[2]):   # 3rd fav wins
+                        if(rank2_odds == sorted_odds[0]):
+                            stra4_cnts[2][0] = stra4_cnts[2][0] + 1
+                        elif(rank2_odds == sorted_odds[1]):
+                            stra4_cnts[2][1] = stra4_cnts[2][1] + 1
+                        elif(rank2_odds == sorted_odds[3]):
+                            stra4_cnts[2][2] = stra4_cnts[2][2] + 1
+                        elif(rank2_odds == sorted_odds[4]):
+                            stra4_cnts[2][3] = stra4_cnts[2][3] + 1
+                        elif(rank2_odds == sorted_odds[5]):
+                            stra4_cnts[2][4] = stra4_cnts[2][4] + 1     
+                    elif(rank1_odds == sorted_odds[3]):   # 4th fav wins
+                        if(rank2_odds == sorted_odds[0]):
+                            stra4_cnts[3][0] = stra4_cnts[3][0] + 1
+                        elif(rank2_odds == sorted_odds[1]):
+                            stra4_cnts[3][1] = stra4_cnts[3][1] + 1
+                        elif(rank2_odds == sorted_odds[2]):
+                            stra4_cnts[3][2] = stra4_cnts[3][2] + 1
+                        elif(rank2_odds == sorted_odds[4]):
+                            stra4_cnts[3][3] = stra4_cnts[3][3] + 1
+                        elif(rank2_odds == sorted_odds[5]):
+                            stra4_cnts[3][4] = stra4_cnts[3][4] + 1
+                    elif(rank1_odds == sorted_odds[4]):   # 5th fav wins
+                        if(rank2_odds == sorted_odds[0]):
+                            stra4_cnts[4][0] = stra4_cnts[4][0] + 1
+                        elif(rank2_odds == sorted_odds[1]):
+                            stra4_cnts[4][1] = stra4_cnts[4][1] + 1
+                        elif(rank2_odds == sorted_odds[2]):
+                            stra4_cnts[4][2] = stra4_cnts[4][2] + 1
+                        elif(rank2_odds == sorted_odds[3]):
+                            stra4_cnts[4][3] = stra4_cnts[4][3] + 1
+                        elif(rank2_odds == sorted_odds[5]):
+                            stra4_cnts[4][4] = stra4_cnts[4][4] + 1
+                    elif(rank1_odds == sorted_odds[5]):   # 6th fav wins
+                        if(rank2_odds == sorted_odds[0]):
+                            stra4_cnts[5][0] = stra4_cnts[5][0] + 1
+                        elif(rank2_odds == sorted_odds[1]):
+                            stra4_cnts[5][1] = stra4_cnts[5][1] + 1
+                        elif(rank2_odds == sorted_odds[2]):
+                            stra4_cnts[5][2] = stra4_cnts[5][2] + 1
+                        elif(rank2_odds == sorted_odds[3]):
+                            stra4_cnts[5][3] = stra4_cnts[5][3] + 1
+                        elif(rank2_odds == sorted_odds[4]):
+                            stra4_cnts[5][4] = stra4_cnts[5][4] + 1
+
+                    ###########################################
+                    ## Strategy 5: forecast based on boxes
+                    ###########################################
+                    if(rank1_odds == original_odds[0]):     # box 1 wins
+                        if(rank2_odds == original_odds[1]): # check who comes after
+                            stra5_cnts[0][0] = stra5_cnts[0][0] + 1
+                        elif(rank2_odds == original_odds[2]):
+                            stra5_cnts[0][1] = stra5_cnts[0][1] + 1
+                        elif(rank2_odds == original_odds[3]):
+                            stra5_cnts[0][2] = stra5_cnts[0][2] + 1
+                        elif(rank2_odds == original_odds[4]):
+                            stra5_cnts[0][3] = stra5_cnts[0][3] + 1
+                        elif(rank2_odds == original_odds[5]):
+                            stra5_cnts[0][4] = stra5_cnts[0][4] + 1
+                    elif(rank1_odds == original_odds[1]):   # box 2 wins
+                        if(rank2_odds == original_odds[0]):
+                            stra5_cnts[1][0] = stra5_cnts[1][0] + 1
+                        elif(rank2_odds == original_odds[2]):
+                            stra5_cnts[1][1] = stra5_cnts[1][1] + 1
+                        elif(rank2_odds == original_odds[3]):
+                            stra5_cnts[1][2] = stra5_cnts[1][2] + 1
+                        elif(rank2_odds == original_odds[4]):
+                            stra5_cnts[1][3] = stra5_cnts[1][3] + 1
+                        elif(rank2_odds == original_odds[5]):
+                            stra5_cnts[1][4] = stra5_cnts[1][4] + 1
+                    elif(rank1_odds == original_odds[2]):   # box 3 wins
+                        if(rank2_odds == original_odds[0]):
+                            stra5_cnts[2][0] = stra5_cnts[2][0] + 1
+                        elif(rank2_odds == original_odds[1]):
+                            stra5_cnts[2][1] = stra5_cnts[2][1] + 1
+                        elif(rank2_odds == original_odds[3]):
+                            stra5_cnts[2][2] = stra5_cnts[2][2] + 1
+                        elif(rank2_odds == original_odds[4]):
+                            stra5_cnts[2][3] = stra5_cnts[2][3] + 1
+                        elif(rank2_odds == original_odds[5]):
+                            stra5_cnts[2][4] = stra5_cnts[2][4] + 1     
+                    elif(rank1_odds == original_odds[3]):   # box 4 wins
+                        if(rank2_odds == original_odds[0]):
+                            stra5_cnts[3][0] = stra5_cnts[3][0] + 1
+                        elif(rank2_odds == original_odds[1]):
+                            stra5_cnts[3][1] = stra5_cnts[3][1] + 1
+                        elif(rank2_odds == original_odds[2]):
+                            stra5_cnts[3][2] = stra5_cnts[3][2] + 1
+                        elif(rank2_odds == original_odds[4]):
+                            stra5_cnts[3][3] = stra5_cnts[3][3] + 1
+                        elif(rank2_odds == original_odds[5]):
+                            stra5_cnts[3][4] = stra5_cnts[3][4] + 1
+                    elif(rank1_odds == original_odds[4]):   # box 5 wins
+                        if(rank2_odds == original_odds[0]):
+                            stra5_cnts[4][0] = stra5_cnts[4][0] + 1
+                        elif(rank2_odds == original_odds[1]):
+                            stra5_cnts[4][1] = stra5_cnts[4][1] + 1
+                        elif(rank2_odds == original_odds[2]):
+                            stra5_cnts[4][2] = stra5_cnts[4][2] + 1
+                        elif(rank2_odds == original_odds[3]):
+                            stra5_cnts[4][3] = stra5_cnts[4][3] + 1
+                        elif(rank2_odds == original_odds[5]):
+                            stra5_cnts[4][4] = stra5_cnts[4][4] + 1
+                    elif(rank1_odds == original_odds[5]):   # box 6 wins
+                        if(rank2_odds == original_odds[0]):
+                            stra5_cnts[5][0] = stra5_cnts[5][0] + 1
+                        elif(rank2_odds == original_odds[1]):
+                            stra5_cnts[5][1] = stra5_cnts[5][1] + 1
+                        elif(rank2_odds == original_odds[2]):
+                            stra5_cnts[5][2] = stra5_cnts[5][2] + 1
+                        elif(rank2_odds == original_odds[3]):
+                            stra5_cnts[5][3] = stra5_cnts[5][3] + 1
+                        elif(rank2_odds == original_odds[4]):
+                            stra5_cnts[5][4] = stra5_cnts[5][4] + 1
+            
             print(f'Strategy 1: \n{stra1_cnts}\n')
             print(f'Strategy 2: \n{stra2_cnts}\n')
             print(f'Strategy 3: \n{stra3_cnts}\n')
-            # print(f'Strategy 4: \n{stra4_cnts}\n')
-            # print(f'Strategy 4: \n{stra4_cnts}\n')
+            print(f'Strategy 4: \n{stra4_cnts}\n')
+            print(f'Strategy 5: \n{stra5_cnts}\n')
                 
 
 
