@@ -76,8 +76,10 @@ try:
             ## TABLE 3
             ###########################################
             # stra_list = []
-            # print("Creating table")
-            cursor.execute('CREATE TABLE strategies_results (Stra1_1 DECIMAL(5,2),Stra1_2 DECIMAL(5,2),Stra1_3 DECIMAL(5,2),Stra1_4 DECIMAL(5,2),Stra1_5 DECIMAL(5,2),Stra1_6 DECIMAL(5,2),\
+            print("Creating table")
+            cursor.execute('DROP TABLE IF EXISTS strategies_results;')
+            cursor.execute('CREATE TABLE strategies_results (venue_id INT PRIMARY KEY AUTO_INCREMENT, venue_name VARCHAR(25), num_races INT,\
+                                                                Stra1_1 DECIMAL(5,2),Stra1_2 DECIMAL(5,2),Stra1_3 DECIMAL(5,2),Stra1_4 DECIMAL(5,2),Stra1_5 DECIMAL(5,2),Stra1_6 DECIMAL(5,2),\
                                                                 Stra2_1 DECIMAL(5,2),Stra2_2 DECIMAL(5,2),Stra2_3 DECIMAL(5,2),Stra2_4 DECIMAL(5,2),Stra2_5 DECIMAL(5,2),Stra2_6 DECIMAL(5,2),\
                                                                 Stra3_1 DECIMAL(5,2),Stra3_2 DECIMAL(5,2),Stra3_3 DECIMAL(5,2),Stra3_4 DECIMAL(5,2),Stra3_5 DECIMAL(5,2),Stra3_6 DECIMAL(5,2),\
                                                                 Stra4_11 DECIMAL(5,2),Stra4_12 DECIMAL(5,2),Stra4_13 DECIMAL(5,2),Stra4_14 DECIMAL(5,2),Stra4_15 DECIMAL(5,2),Stra4_21 DECIMAL(5,2),Stra4_22 DECIMAL(5,2),Stra4_23 DECIMAL(5,2),Stra4_24 DECIMAL(5,2),Stra4_25 DECIMAL(5,2),Stra4_31 DECIMAL(5,2),Stra4_32 DECIMAL(5,2),Stra4_33 DECIMAL(5,2),Stra4_34 DECIMAL(5,2),Stra4_35 DECIMAL(5,2),Stra4_41 DECIMAL(5,2),Stra4_42 DECIMAL(5,2),Stra4_43 DECIMAL(5,2),Stra4_44 DECIMAL(5,2),Stra4_45 DECIMAL(5,2),Stra4_51 DECIMAL(5,2),Stra4_52 DECIMAL(5,2),Stra4_53 DECIMAL(5,2),Stra4_54 DECIMAL(5,2),Stra4_55 DECIMAL(5,2),Stra4_61 DECIMAL(5,2),Stra4_62 DECIMAL(5,2),Stra4_63 DECIMAL(5,2),Stra4_64 DECIMAL(5,2),Stra4_65 DECIMAL(5,2),\
