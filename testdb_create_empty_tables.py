@@ -78,7 +78,7 @@ try:
             # stra_list = []
             print("Creating table")
             cursor.execute('DROP TABLE IF EXISTS strategies_results;')
-            cursor.execute('CREATE TABLE strategies_results (venue_id INT PRIMARY KEY AUTO_INCREMENT, venue_name VARCHAR(25), num_races INT,\
+            cursor.execute('CREATE TABLE strategies_results (venue_id INT PRIMARY KEY AUTO_INCREMENT, num_races INT,\
                                                                 Stra1_1 DECIMAL(5,2),Stra1_2 DECIMAL(5,2),Stra1_3 DECIMAL(5,2),Stra1_4 DECIMAL(5,2),Stra1_5 DECIMAL(5,2),Stra1_6 DECIMAL(5,2),\
                                                                 Stra2_1 DECIMAL(5,2),Stra2_2 DECIMAL(5,2),Stra2_3 DECIMAL(5,2),Stra2_4 DECIMAL(5,2),Stra2_5 DECIMAL(5,2),Stra2_6 DECIMAL(5,2),\
                                                                 Stra3_1 DECIMAL(5,2),Stra3_2 DECIMAL(5,2),Stra3_3 DECIMAL(5,2),Stra3_4 DECIMAL(5,2),Stra3_5 DECIMAL(5,2),Stra3_6 DECIMAL(5,2),\
