@@ -29,39 +29,44 @@
 ## sql Updater
 #################################################
 # with open('to_copy.txt', 'w') as f:
-#     # for j in range(80):
-#     #     # if j < 5
-#     j = 2
+#     j = 3
 #     ## Strategy 1
 #     for i in range(6):  
-#         f.write(f'Stra1_{i+1} = {{result[{j}]}},')
+#         f.write(f'Stra1_{i+1} = {{updated_data[{j}]}},')
 #         j = j+1
+#     f.write('\\')
 
 #     ## Strategy 2
 #     f.write('\n')
 #     for i in range(6):
-#         f.write(f'Stra2_{i+1} = {{result[{j}]}},')
+#         f.write(f'Stra2_{i+1} = {{updated_data[{j}]}},')
 #         j = j+1
+#     f.write('\\')
 
 #     ## Strategy 3
 #     f.write('\n')
 #     for i in range(6):
-#         f.write(f'Stra3_{i+1} = {{result[{j}]}},')
+#         f.write(f'Stra3_{i+1} = {{updated_data[{j}]}},')
 #         j = j+1
+#     f.write('\\')
 
 #     ## Strategy 4
 #     f.write('\n')
 #     for k in range(6):
 #         for i in range(5):
-#             f.write(f'Stra4_{k+1}{i+1} = {{result[{j}]}},')
+#             f.write(f'Stra4_{k+1}{i+1} = {{updated_data[{j}]}},')
 #             j = j+1
-            
+#     f.write('\\')
+
 #     ## Strategy 5
 #     f.write('\n')
 #     for k in range(6):
 #         for i in range(5):
-#             f.write(f'Stra5_{k+1}{i+1} = {{result[{j}]}},')
+#             if k == 5 and i == 4:
+#                 f.write(f'Stra5_{k+1}{i+1} = {{updated_data[{j}]}}')
+#             else:
+#                 f.write(f'Stra5_{k+1}{i+1} = {{updated_data[{j}]}},')
 #             j = j+1
-
+#     f.write('\\')
 
 
