@@ -409,31 +409,83 @@ def main():
     ########################################### 
     sql_uploader(new_data, venue_id)
 
+def overall_analytics_updater():
+    try:
+        with connect(
+            host= host_name,
+            user= user_name,
+            password= pwd,
+            database = db_name
+        ) as connection:
+            print(f'overall_analytics_updater db_connection ACHIEVED!.......... \n{connection}')
+
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT database();")
+                record = cursor.fetchone()
+                print("Your are connected to database: ", record)
+
+                ## Count number of entries in the venue table
+                cursor.execute(f'SELECT COUNT(*)\
+                                FROM {percentages_table};')
+                rows_cnt = int(pd.DataFrame(cursor.fetchone()).to_numpy())
+                
+                print(f'rows_cnt = {rows_cnt}')
+
+                ## Get all the entries and add them up
+                cursor.execute(f'SELECT *\
+                                FROM {percentages_table};')
+                
+                overall_data = pd.DataFrame(cursor.fetchall()).to_numpy(dtype=float)
+                # print(f'overall_data: size = {len(overall_data)}\n{overall_data}')
+                # overall_data = overall_data[0] # get rid of double brackets and convert to one bracket only
+                # print(f'overall_data: size = {len(overall_data)}\n{overall_data}')
+                
+                ## Update the data
+                updated_overall_data = overall_data[0]
+                for i,data_i in enumerate(overall_data):
+                    if i > 0:
+                        updated_overall_data = np.add(updated_overall_data, data_i)
+                        
+                updated_overall_data[3:] = np.divide(updated_overall_data[3:],rows_cnt).round(decimals=2) # divide the percentages by 2 to get the average, otherwise % will exceed 100% overtime
+                np.set_printoptions(suppress=True)
+                # updated_overall_data[3:] = np.around(updated_overall_data[3:], decimals=2)
+                print(f'updated_overall_data: size = {len(updated_overall_data)}\n{updated_overall_data}')
+
+                connection.commit()
+                print(f'overall_analytics_updater db_connection COMMITTED!!!..........\n')
+    except Error as e:
+        print(e)
+
+
 if __name__ == '__main__':
-    ##TODO: Choose type of operation
-    opr_mode = 0 # 0 = INSERT(used only for the first time); 1 = SELECT & UPDATE existing data
-    # venue_name = 'central_park' # name of venue table that we want to extract new data form
-    # venue_id = 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
+    # ##TODO: Choose type of operation
+    # opr_mode = 0 # 0 = INSERT(used only for the first time); 1 = SELECT & UPDATE existing data
+    # # venue_name = 'central_park' # name of venue table that we want to extract new data form
+    # # venue_id = 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
        
     percentages_table = '1_indv_venue_analytics'
+    overall_table = '0_overall_analytics'
+
     host_name = 'localhost'
     user_name = 'root'
     pwd = '12345'
     db_name = 'test'
 
-    venue_names = ('central_park', 'central_park_bags', 'crayford', 'crayford_bags', 'doncaster',\
-                    'doncaster_bags', 'harlow', 'harlow_bags', 'henlow', 'henlow_bags',\
-                    'hove', 'hove_bags', 'kinsley_bags', 'monmore', 'newcastle_bags',\
-                    'nottingham_bags', 'pelaw_grange_bags', 'perry_barr_bags', 'romford', 'romford_bags',\
-                    'sheffield_bags', 'sunderland_bags', 'swindon_bags', 'towcester', 'towcester_bags',\
-                    'yarmouth_bags') # total 26 venues
+    # venue_names = ('central_park', 'central_park_bags', 'crayford', 'crayford_bags', 'doncaster',\
+    #                 'doncaster_bags', 'harlow', 'harlow_bags', 'henlow', 'henlow_bags',\
+    #                 'hove', 'hove_bags', 'kinsley_bags', 'monmore', 'newcastle_bags',\
+    #                 'nottingham_bags', 'pelaw_grange_bags', 'perry_barr_bags', 'romford', 'romford_bags',\
+    #                 'sheffield_bags', 'sunderland_bags', 'swindon_bags', 'towcester', 'towcester_bags',\
+    #                 'yarmouth_bags') # total 26 venues
     
-    for v_i,v_name in enumerate(venue_names):
-        ##TODO
-        venue_name = v_name # name of venue table that we want to extract new data form
-        venue_id = v_i + 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
+    # for v_i,v_name in enumerate(venue_names):
+    #     ##TODO
+    #     venue_name = v_name # name of venue table that we want to extract new data form
+    #     venue_id = v_i + 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
         
-        # print(f'venue_name = {venue_name}, id = {venue_id}')
-        ## Start main
-        main()
+    #     # print(f'venue_name = {venue_name}, id = {venue_id}')
+    #     ## Start main
+    #     main()
+
+    overall_analytics_updater()
 
