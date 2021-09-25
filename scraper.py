@@ -82,6 +82,7 @@ for venue_link in venue_links:
         data_arr_part1 = [] 
         data_arr_part2 = []
         abdn_flag = False
+        ## Check through the scrated text data
         for line in data.splitlines():
             if(line == 'Abandoned'):
                 abdn_flag = True
@@ -129,6 +130,7 @@ for venue_link in venue_links:
                         print("There has been a tie for one position")
 
             ## Add data for all 6 players' odds
+            #TODO: add TBD error checking here
             for i,val in enumerate(data_arr_part2):
                 if('1. ' in val):
                     if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):

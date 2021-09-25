@@ -2,26 +2,20 @@
 from mysql.connector import connect, Error
 import pandas as pd
 import numpy as np
-
 import csv
 
-##TODO: Choose type of operation
-opr_mode = 1 # 0 = INSERT(used only for the first time); 1 = SELECT & UPDATE existing data
-venue_id = 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in strategies table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
-venue_name = 'testing_data_online_movie_rating' # name of venue table that we want to extract new data form
-percentages_table = "strategies_results_v2"
 ###########################################
 ## Upload to mysql server
 ###########################################
-def sql_uploader(new_data):
+def sql_uploader(new_data, venue_id):
     
     print(f'new_data: size = {len(new_data)}\n{new_data}')
     try:
         with connect(
-            host="localhost",
-            user='root',
-            password='12345',
-            database = "online_movie_rating"
+            host= host_name,
+            user= user_name,
+            password= pwd,
+            database = db_name
         ) as connection:
             print(f'sql_uploader db_connection ACHIEVED!.......... \n{connection}')
 
@@ -49,6 +43,8 @@ def sql_uploader(new_data):
                         print(f'Got an error in INSERT')
                         print(e)
                 elif opr_mode == 1:
+                    print("Opr_mode = 1 selected Error!!!")
+                    ''' # Not working yet
                     try:
                         ## read the existing data
                         cursor.execute(f'SELECT *\
@@ -81,6 +77,7 @@ def sql_uploader(new_data):
                     except Error as e:
                         print(f'Got an error in UPDATE')
                         print(e)
+                    '''
                 else:
                     print("ERROR! Please choose a correct type of operation mode!!!")
                 
@@ -95,12 +92,12 @@ def sql_uploader(new_data):
 def main():
     try:
         with connect(
-            host="localhost",
             # user=input("Enter username: "),
             # password=getpass("Enter password: "),
-            user='root',
-            password='12345',
-            database = "online_movie_rating"
+            host= host_name,
+            user= user_name,
+            password= pwd,
+            database = db_name
         ) as connection:
             print(f'main db_connection achieved.......... \n{connection}')
 
@@ -410,7 +407,33 @@ def main():
     ###########################################
     ## Call sql_uploader()
     ########################################### 
-    sql_uploader(new_data)
+    sql_uploader(new_data, venue_id)
 
 if __name__ == '__main__':
-    main()
+    ##TODO: Choose type of operation
+    opr_mode = 0 # 0 = INSERT(used only for the first time); 1 = SELECT & UPDATE existing data
+    # venue_name = 'central_park' # name of venue table that we want to extract new data form
+    # venue_id = 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
+       
+    percentages_table = '1_indv_venue_analytics'
+    host_name = 'localhost'
+    user_name = 'root'
+    pwd = '12345'
+    db_name = 'test'
+
+    venue_names = ('central_park', 'central_park_bags', 'crayford', 'crayford_bags', 'doncaster',\
+                    'doncaster_bags', 'harlow', 'harlow_bags', 'henlow', 'henlow_bags',\
+                    'hove', 'hove_bags', 'kinsley_bags', 'monmore', 'newcastle_bags',\
+                    'nottingham_bags', 'pelaw_grange_bags', 'perry_barr_bags', 'romford', 'romford_bags',\
+                    'sheffield_bags', 'sunderland_bags', 'swindon_bags', 'towcester', 'towcester_bags',\
+                    'yarmouth_bags') # total 26 venues
+    
+    for v_i,v_name in enumerate(venue_names):
+        ##TODO
+        venue_name = v_name # name of venue table that we want to extract new data form
+        venue_id = v_i + 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
+        
+        # print(f'venue_name = {venue_name}, id = {venue_id}')
+        ## Start main
+        main()
+

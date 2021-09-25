@@ -39,7 +39,7 @@ def main():
                         # print(data)
                         for i,r in data.iterrows():
                             try:
-                                cursor.execute(f'INSERT INTO {row[0]} VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', tuple(r))
+                                cursor.execute(f'INSERT INTO {row[0]} VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);', tuple(r))
                             except Error as e:
                                 print(f'Got to error in executing row number {i}')
                                 print(e)
