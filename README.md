@@ -11,6 +11,7 @@ Uses Selenium, Python and MySQL
 
 Others: 
 1. chromedriver (in the same version as your current chrome browser version)
+2. others maybe?
 
 ## Steps
 1. Insert venue links into venue_links.txt
