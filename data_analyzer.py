@@ -44,7 +44,10 @@ def sql_uploader(new_data, venue_id):
                         print(e)
                 elif opr_mode == 1:
                     print("Opr_mode = 1 selected Error!!!")
-                    ''' # Not working yet
+                    ''' #TODO Future implementation maybe? 
+                        #Reason: currently we trucate the table and insert new data, so requires to read all the tables from the start everytime we run the program
+                        #With this operation mode, we could just ingest the latest inserted data and update the percentages table by adding and averaging with the old data.
+                        #this mode will be more efficient when the data becomes huge
                     try:
                         ## read the existing data
                         cursor.execute(f'SELECT *\
@@ -409,6 +412,9 @@ def main():
     ########################################### 
     sql_uploader(new_data, venue_id)
 
+###########################################
+## Update the final overall percentages table
+########################################### 
 def overall_analytics_updater():
     try:
         with connect(
@@ -447,45 +453,142 @@ def overall_analytics_updater():
                         updated_overall_data = np.add(updated_overall_data, data_i)
                         
                 updated_overall_data[3:] = np.divide(updated_overall_data[3:],rows_cnt).round(decimals=2) # divide the percentages by 2 to get the average, otherwise % will exceed 100% overtime
-                np.set_printoptions(suppress=True)
-                # updated_overall_data[3:] = np.around(updated_overall_data[3:], decimals=2)
-                print(f'updated_overall_data: size = {len(updated_overall_data)}\n{updated_overall_data}')
+                np.set_printoptions(suppress=True) # get rid of scientific notation
+                updated_overall_data = np.delete(updated_overall_data,[0,2]) # delete venue_id and num_days
+                updated_overall_data = np.insert(updated_overall_data,0,1) # put overall_id = 1 #TODO hardcoded
+                # print(f'updated_overall_data: size = {len(updated_overall_data)}\n{updated_overall_data}')
+                
+                ## upload to the overall_analytics_table in mysql server
+                try:
+                    # use INSERT if first time adding results for a venue
+                    cursor.execute(f'INSERT INTO {overall_table}\
+                                        VALUES(\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\
+                                        %s,%s,%s,%s,%s,%s,%s,%s,%s,%s);', tuple(updated_overall_data))
+                    
+                except Error as e:
+                    print(f'Got an error in INSERT')
+                    print(e)
+
 
                 connection.commit()
                 print(f'overall_analytics_updater db_connection COMMITTED!!!..........\n')
     except Error as e:
         print(e)
 
+def table_truncater():
+    try:
+        with connect(
+            host= host_name,
+            user= user_name,
+            password= pwd,
+            database = db_name
+        ) as connection:
+            print(f'overall_analytics_updater db_connection ACHIEVED!.......... \n{connection}')
+
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT database();")
+                record = cursor.fetchone()
+                print("Your are connected to database: ", record)
+
+                ## truncate the tables 0 and 1
+                cursor.execute(f'TRUNCATE TABLE {percentages_table}')
+                cursor.execute(f'TRUNCATE TABLE {overall_table}')
+
+                connection.commit()
+                print(f'table_truncater db_connection COMMITTED!!!..........\n')
+
+    except Error as e:
+        print(f'Got an error in INSERT')
+        print(e)
+
+###########################################
+## check if a string is of float type
+########################################### 
+def is_float(str):
+    try:
+        float(str)
+        return True
+    except ValueError:
+        return False
+
+###########################################
+## load the scraped data to mysql server according to venue names
+########################################### 
+def import_csvData_to_mysql(csv_fname):
+    # Read data into a variable
+    csvData = pd.read_csv(csv_fname, delimiter=',')
+    # print(csvData)
+    try:
+        with connect(
+            host= host_name,
+            user= user_name,
+            password= pwd,
+            database = db_name
+        ) as connection:
+            print(connection)
+
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT database();")
+                record = cursor.fetchone()
+                print("Your are connected to database: ", record)
+
+                ## Import the data into their respective venue tables
+                for index,row in csvData.iterrows():
+                    # Check for the venue_name headers
+                    if not row[0].isdigit() and not is_float(row[0]):
+                        data = csvData.iloc[index+1:index+10]
+                        # print(data)
+                        for i,r in data.iterrows():
+                            try:
+                                cursor.execute(f'INSERT INTO {row[0]} VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);', tuple(r))
+                            except Error as e:
+                                print(f'Got to error in executing row number {i}')
+                                print(e)
+                connection.commit()
+    except Error as e:
+        print("Error in connection")
+        print(e)
+    
+
 
 if __name__ == '__main__':
     # ##TODO: Choose type of operation
-    # opr_mode = 0 # 0 = INSERT(used only for the first time); 1 = SELECT & UPDATE existing data
-    # # venue_name = 'central_park' # name of venue table that we want to extract new data form
-    # # venue_id = 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
-       
+    opr_mode = 0 # 0 = INSERT(used only for the first time); 1 = SELECT & UPDATE existing data
+    csv_fname = '/home/tranks/scrapeBySelenium/webscraper_for_analytics/New_data.csv'
     percentages_table = '1_indv_venue_analytics'
     overall_table = '0_overall_analytics'
-
+    
+    # mysql server deets
     host_name = 'localhost'
     user_name = 'root'
     pwd = '12345'
     db_name = 'test'
 
-    # venue_names = ('central_park', 'central_park_bags', 'crayford', 'crayford_bags', 'doncaster',\
-    #                 'doncaster_bags', 'harlow', 'harlow_bags', 'henlow', 'henlow_bags',\
-    #                 'hove', 'hove_bags', 'kinsley_bags', 'monmore', 'newcastle_bags',\
-    #                 'nottingham_bags', 'pelaw_grange_bags', 'perry_barr_bags', 'romford', 'romford_bags',\
-    #                 'sheffield_bags', 'sunderland_bags', 'swindon_bags', 'towcester', 'towcester_bags',\
-    #                 'yarmouth_bags') # total 26 venues
+    venue_names = ('central_park', 'central_park_bags', 'crayford', 'crayford_bags', 'doncaster',\
+                    'doncaster_bags', 'harlow', 'harlow_bags', 'henlow', 'henlow_bags',\
+                    'hove', 'hove_bags', 'kinsley_bags', 'monmore', 'newcastle_bags',\
+                    'nottingham_bags', 'pelaw_grange_bags', 'perry_barr_bags', 'romford', 'romford_bags',\
+                    'sheffield_bags', 'sunderland_bags', 'swindon_bags', 'towcester', 'towcester_bags',\
+                    'yarmouth_bags') # total 26 venues
     
-    # for v_i,v_name in enumerate(venue_names):
-    #     ##TODO
-    #     venue_name = v_name # name of venue table that we want to extract new data form
-    #     venue_id = v_i + 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
+    import_csvData_to_mysql(csv_fname) # read csv file called "New_data.csv" and upload the data into mysql server
+    table_truncater() # clear out the values from the tables 0 and 1
+    
+    for v_i,v_name in enumerate(venue_names):
+        ## Loop through all the venues 
+        venue_name = v_name # name of venue table that we want to extract new data form
+        venue_id = v_i + 1 # opr_mode 0: venue_id for new venue, opr_mode 1: venue_id that we want to update. NOTE: venue_id is only defined in the percentages table, not in the actual venue table, hence the necessity of inputing both venue_id & venue_name
         
-    #     # print(f'venue_name = {venue_name}, id = {venue_id}')
-    #     ## Start main
-    #     main()
+        # print(f'venue_name = {venue_name}, id = {venue_id}')
+        ## Start main, apply strategies
+        main()
 
-    overall_analytics_updater()
+    overall_analytics_updater() # update the final overall table
 
