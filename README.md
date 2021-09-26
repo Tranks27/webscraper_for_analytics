@@ -1,4 +1,5 @@
 # webscraper_for_analytics
+Scrape data from a ### website and analyse it according to the strategies 
 Uses Selenium, Python and MySQL
 
 ## Requirements
@@ -6,6 +7,8 @@ Uses Selenium, Python and MySQL
 2. Create a python3 environment
 3. $ pip install -r requirements.txt
 
+Others: 
+1. chromedriver (in the same version as your current chrome browser version)
 
 ## Steps
 1. Insert venue links into venue_links.txt
