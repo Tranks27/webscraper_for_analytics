@@ -14,8 +14,12 @@ Others:
 2. others maybe?
 
 ## Steps
-1. Insert venue links into venue_links.txt
+1. Insert venue links into venue_links.txt.
 2. $ python3 scraper.py
-3. $ python3 data_analyzer.py
-4. Look at the results in the 0_xxx and 1_xxx tables
+3. Check for TBD values in the New_data.csv.
+4. $ python3 data_analyzer.py
+5. Look at the results in the 0_xxx and 1_xxx tables
 
+## NOTE
+1. [STEP 1] Avoid venues with missing first race and 'CLOSED' races.
+2. [STEP 3] Replace the whole race with '-' if found.
