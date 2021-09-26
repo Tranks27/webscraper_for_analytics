@@ -1,5 +1,5 @@
 # webscraper_for_analytics
-Scrape data from a ### website and analyse it according to the strategies in this table
+Scrape data from a ### website and extract desired data into MySQL server tables for analysis. Strategies analysed are as shown here.
 <img src="/strategies.png" alt="Current Strategies"/>
 
 Uses Selenium, Python and MySQL
