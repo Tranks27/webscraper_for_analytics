@@ -21,5 +21,5 @@ Others:
 5. Look at the results in the 0_xxx and 1_xxx tables
 
 ## NOTE
-1. [STEP 1] Avoid venues with missing first race and 'CLOSED' races.
+1. [STEP 1] Avoid venues with 'CLOSED' races.
 2. [STEP 3] Replace the whole race with '-' if found.
