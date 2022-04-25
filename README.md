@@ -1,5 +1,5 @@
 # webscraper_for_analytics
-Scrape data from Neds betting website and extract desired data into MySQL server tables for analysis. Strategies analysed are as shown here.
+Scrape data from a betting website and extract desired data into MySQL server tables for analysis. Strategies analysed are as shown here.
 <img src="/strategies.png" alt="Current Strategies"/>
 
 Uses Selenium, Python and MySQL
