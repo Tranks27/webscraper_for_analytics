@@ -20,7 +20,7 @@ Uses Selenium, Python and MySQL
 - Download the chromedriver from the offcial website here. https://chromedriver.chromium.org/
 - Move the chromedriver to file in PATH
 ```
-  $ sudo mv ~/path/to/chromedrvier /usr/local/bin/
+  $ sudo mv ~/path/to/chromedriver /usr/local/bin/
   $ sudo chmod +x /usr/local/bin/chromedriver
 ```
 
