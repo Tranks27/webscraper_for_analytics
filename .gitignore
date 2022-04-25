@@ -1,2 +1,3 @@
-*.txt
+venue_links.txt
+/venv
 *.csv

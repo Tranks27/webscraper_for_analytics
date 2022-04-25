@@ -6,14 +6,19 @@ Uses Selenium, Python and MySQL
 
 ## Requirements
 1. Import this folder /webscraper_for_analytics/mysql_testing/Exported_data_from_mysql(backup) into your mysql server (used MySQL workbench in my case)
-2. Create a python3 environment
-3. $ pip install -r requirements.txt
+2. Create a python3 environment with
+  $ pip3 install virtualenv
+  $ virtualenv venv
+  $ source venv/bin/activate
+4. Install the required modules
+  $ pip3 install -r requirements.txt
+5. Install the chromedriver (in the same version as your current chromium/google chrome browser version)
+- Download the chromedriver from the offcial website here. https://chromedriver.chromium.org/
+- Move the chromedriver to file in PATH
+  $ sudo mv ~/path/to/chromedrvier /usr/local/bin/
+  $ sudo chmod +x /usr/local/bin/chromedriver
 
-Others: 
-1. chromedriver (in the same version as your current chrome browser version)
-2. others maybe?
-
-## Steps
+## Steps to follow for demo
 1. Insert venue links into venue_links.txt.
 2. $ python3 scraper.py
 3. Check for TBD values in the New_data.csv.
