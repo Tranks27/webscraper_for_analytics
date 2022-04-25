@@ -5,8 +5,9 @@ Scrape data from a betting website and extract desired data into MySQL server ta
 Uses Selenium, Python and MySQL
 
 ## Requirements
-1. Import this folder /webscraper_for_analytics/mysql_testing/Exported_data_from_mysql(backup) into your mysql server (used MySQL workbench in my case)
-2. Create a python3 environment with
+1. Install MySQL Workbench, start connection to local MySQL server and create a database named "test"
+2. Import this folder /webscraper_for_analytics/mysql_testing/Exported_data_from_mysql(backup) into your mysql server
+3. Create a python3 environment with
 ```
   $ pip3 install virtualenv
   $ virtualenv venv
