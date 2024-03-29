@@ -8,6 +8,8 @@ from selenium.webdriver.chrome.options import Options
 import time
 import csv
 
+RUNNER_ODD_OFFSET = 4
+
 options = Options()
 options.add_argument('--headless') # headless browser so GUI is not shown
 options.add_argument('--incognito')
@@ -22,7 +24,7 @@ links_filename = 'venue_links.txt'
 with open(links_filename, 'r') as f:
     venue_links = f.readlines()
 print(f'...Venue links imported from {links_filename}')
-open(links_filename,'w').close() #clear contents of the file
+# open(links_filename,'w').close() #clear contents of the file
 
 venue_count = 0
 for venue_link in venue_links:
@@ -42,7 +44,8 @@ for venue_link in venue_links:
             EC.presence_of_element_located((By.ID, "page-content"))
         )
     finally:
-        data = elem.find_elements_by_class_name('race-switcher-list__link')
+        # data = elem.find_elements_by_class_name('race-switcher-list__link')
+        data = elem.find_elements(By.CLASS_NAME, 'race-switcher-list__link')
         race_links = []
         for race_link in data:
             # print(link.get_attribute('innerHTML'))
@@ -64,7 +67,6 @@ for venue_link in venue_links:
     p4 = []
     p5 = []
     p6 = []
-
 
     for url in race_links:
         driver.get(url)
@@ -132,36 +134,38 @@ for venue_link in venue_links:
             ## Add data for all 6 players' odds
             #TODO: add TBD error checking here
             for i,val in enumerate(data_arr_part2):
-                if('1. ' in val):
+                if('1.' == val):
+                    print(f'current i is {i}')
                     if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                         p1.append('-')
                     else:
-                        p1.append(str(data_arr_part2[i+2])) #get the first value of that string
-                elif('2. ' in val):
+                        p1.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                elif('2.' == val):
+                    print(f'current i is {i}')
                     if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                         p2.append('-')
                     else:
-                        p2.append(str(data_arr_part2[i+2])) 
-                elif('3. ' in val):
+                        p2.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                elif('3.' == val):
                     if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                         p3.append('-')
                     else:
-                        p3.append(str(data_arr_part2[i+2])) 
-                elif('4. ' in val):
+                        p3.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                elif('4.' == val):
                     if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                         p4.append('-')
                     else:
-                        p4.append(str(data_arr_part2[i+2])) 
-                elif('5. ' in val):
+                        p4.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                elif('5.' == val):
                     if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                         p5.append('-')
                     else:
-                        p5.append(str(data_arr_part2[i+2])) 
-                elif('6. ' in val):
+                        p5.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                elif('6.' == val):
                     if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
                         p6.append('-')
                     else:
-                        p6.append(str(data_arr_part2[i+2])) 
+                        p6.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
         else:
             r1.append('-')
             r2.append('-')
@@ -176,7 +180,7 @@ for venue_link in venue_links:
 
     ## If there are less than 12 races at a venue, fill in the blanks with '-'
     complete_data = [r1, r2, r3, p1, p2, p3, p4, p5, p6]
-    print(complete_data)
+    # print(complete_data)
     for i in complete_data:
         while len(i) != 12:
             i.append('-')

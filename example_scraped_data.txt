@@ -1,0 +1,48 @@
+['CENTRAL PARK BAGS', 'GOOD', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '277m', 'Tuesday 26Th March 2024', 'Final', 'RACE FIELD', 'COMMENTS', '$ TRACKER', 'FLUCTUATIONS', 'CLOSED', 'INTERIM', 'FINAL', 'RESULTS', '1st', '6. Midas Flash (6)', 'T D P Brabon', 'WIN', '2.70', 'PLACE', '1.50', 'QLD', 'TBD', 'NSW', 'TBD', 'VIC', 'TBD', '2nd', '1. Broadway World (1)', 'T M Mavrias', 'PLACE', '1.95', '3rd', '3. Rugged Road (3)', 'T A M P Collett', 'PLACE', 'NTD', '4th', '2. Cuckoo Lass (2)', 'T S Mavrias', 'FULL FIELD', 'RUNNERS']
+end of part1
+
+
+
+
+
+
+
+['RUNNERS', 
+'12125', 
+'1.', 
+'Broadway World', 
+'(1)', 
+'T: M Mavrias', 
+'4.20', 
+'42124', 
+'2.', 
+'Cuckoo Lass', 
+'(2)', 
+'T: S Mavrias', 
+'18.00', 
+'1153', 
+'3.', 
+'Rugged Road', 
+'(3)', 
+'T: A M P Collett', 
+'2.60', 
+'53163', 
+'4.', 
+'Fairy Dust', 
+'(4)', 
+'T: D Puddy', 
+'13.00', 
+'32141', 
+'5.', 
+'Eire Force Two', 
+'(5)', 
+'T: M Mavrias', 
+'6.50', 
+'666x1', 
+'6.', 
+'Midas Flash', 
+'(6)', 
+'T: D P Brabon', 
+'2.70', 
+'Event Rules: Only two place dividends paid.', 
+'BetStop is the National Self-Exclusion Register. You can choose to Self-Exclude from all licensed bookmakers in Australia. Visit www.betstop.gov.au for more information.']
