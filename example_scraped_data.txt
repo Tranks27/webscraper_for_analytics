@@ -46,3 +46,7 @@ end of part1
 '2.70', 
 'Event Rules: Only two place dividends paid.', 
 'BetStop is the National Self-Exclusion Register. You can choose to Self-Exclude from all licensed bookmakers in Australia. Visit www.betstop.gov.au for more information.']
+
+['CENTRAL PARK BAGS', 'GOOD', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '277m', 'Race 7', 'Final', 'RACE FIELD', 'COMMENTS', '$ TRACKER', 'FLUCTUATIONS', 'CLOSED', 'INTERIM', 'FINAL', 'RESULTS', '1st', '5. Silver Medal (5)', 'T M Mavrias', 'WIN', '4.40', 'PLACE', '1.85', 'QLD', 'TBD', 'NSW', 'TBD', 'VIC', 'TBD', '2nd', '4. Mucho Macho Lily (4)', 'T M Mavrias', 'PLACE', '2.60', '3rd', '1. Geneva Jordy (1)', 'T S Mavrias', 'PLACE', 'NTD', '4th', '2. Franco George (2)', 'T G L Davidson', 'FULL FIELD', 'RUNNERS']
+6: end of part1
+['RUNNERS', '32232', '1.', 'Geneva Jordy', '(1)', 'T: S Mavrias', '1.90', '61522', '2.', 'Franco George', '(2)', 'T: G L Davidson', '4.20', '2164x', '3.', 'Mobile Panda', '(3)', 'T: S Mavrias', '10.00', '32x62', '4.', 'Mucho Macho Lily', '(4)', 'T: M Mavrias', '7.50', '51x42', '5.', 'Silver Medal', '(5)', 'T: M Mavrias', '4.40', '6.', 'Vacant Box', 'SCRATCHED', '26/03, 1:43 am', 'Event Rules: Only two place dividends paid.', 'BetStop is the National Self-Exclusion Register. You can choose to Self-Exclude from all licensed bookmakers in Australia. Visit www.betstop.gov.au for more information.']

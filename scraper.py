@@ -8,7 +8,8 @@ from selenium.webdriver.chrome.options import Options
 import time
 import csv
 
-RUNNER_ODD_OFFSET = 4
+RUNNER_ODDS_OFFSET = 4
+SCRATCH_POS_OFFSET = 2
 
 options = Options()
 options.add_argument('--headless') # headless browser so GUI is not shown
@@ -68,7 +69,9 @@ for venue_link in venue_links:
     p5 = []
     p6 = []
 
-    for url in race_links:
+    for j,url in enumerate(race_links):
+    # if len(race_links):
+    #     url = race_links[0]
         driver.get(url)
         time.sleep(2)
         try:
@@ -98,7 +101,7 @@ for venue_link in venue_links:
             # print(line)
 
         # print(data_arr_part1)
-        # print("end of part1")
+        # print(f"{j}: end of part1")
         # print(data_arr_part2)
 
         # check if the race is abandoned
@@ -135,37 +138,35 @@ for venue_link in venue_links:
             #TODO: add TBD error checking here
             for i,val in enumerate(data_arr_part2):
                 if('1.' == val):
-                    print(f'current i is {i}')
-                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                    if(data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED' or data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED (LATE)'):
                         p1.append('-')
                     else:
-                        p1.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                        p1.append(str(data_arr_part2[i+RUNNER_ODDS_OFFSET])) 
                 elif('2.' == val):
-                    print(f'current i is {i}')
-                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                    if(data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED' or data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED (LATE)'):
                         p2.append('-')
                     else:
-                        p2.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                        p2.append(str(data_arr_part2[i+RUNNER_ODDS_OFFSET])) 
                 elif('3.' == val):
-                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                    if(data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED' or data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED (LATE)'):
                         p3.append('-')
                     else:
-                        p3.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                        p3.append(str(data_arr_part2[i+RUNNER_ODDS_OFFSET])) 
                 elif('4.' == val):
-                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                    if(data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED' or data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED (LATE)'):
                         p4.append('-')
                     else:
-                        p4.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                        p4.append(str(data_arr_part2[i+RUNNER_ODDS_OFFSET])) 
                 elif('5.' == val):
-                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                    if(data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED' or data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED (LATE)'):
                         p5.append('-')
                     else:
-                        p5.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                        p5.append(str(data_arr_part2[i+RUNNER_ODDS_OFFSET])) 
                 elif('6.' == val):
-                    if(data_arr_part2[i+1] == 'SCRATCHED' or data_arr_part2[i+1] == 'SCRATCHED (LATE)'):
+                    if(data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED' or data_arr_part2[i+SCRATCH_POS_OFFSET] == 'SCRATCHED (LATE)'):
                         p6.append('-')
                     else:
-                        p6.append(str(data_arr_part2[i+RUNNER_ODD_OFFSET])) 
+                        p6.append(str(data_arr_part2[i+RUNNER_ODDS_OFFSET])) 
         else:
             r1.append('-')
             r2.append('-')
@@ -185,15 +186,15 @@ for venue_link in venue_links:
         while len(i) != 12:
             i.append('-')
     
-    # print(r1)
-    # print(r2)
-    # print(r3)
-    # print(p1)
-    # print(p2)
-    # print(p3)
-    # print(p4)
-    # print(p5)
-    # print(p6)
+    print(r1)
+    print(r2)
+    print(r3)
+    print(p1)
+    print(p2)
+    print(p3)
+    print(p4)
+    print(p5)
+    print(p6)
 
     # page = url.split("/")[-2]
     # filename = f'{page}.csv'
