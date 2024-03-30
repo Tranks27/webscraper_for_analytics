@@ -170,7 +170,7 @@ def main():
 
                             ## Odds of the first 3 favorites 
                             original_odds = result_np[race_i][:6]
-                            # print(f'original odds = {original_odds}')
+                            print(f'original odds = {original_odds}')
                             sorted_odds = sorted(original_odds, key=float) #comparison between the first 6 players' odds
                             # print(f'sorted odds = {sorted_odds}')
                             lowest1_odds = sorted_odds[0] 
@@ -442,7 +442,7 @@ def overall_analytics_updater():
                                 FROM {percentages_table};')
                 
                 overall_data = pd.DataFrame(cursor.fetchall()).to_numpy(dtype=float)
-                # print(f'overall_data: size = {len(overall_data)}\n{overall_data}')
+                print(f'overall_data: size = {len(overall_data)}\n{overall_data}')
                 # overall_data = overall_data[0] # get rid of double brackets and convert to one bracket only
                 # print(f'overall_data: size = {len(overall_data)}\n{overall_data}')
                 
@@ -561,7 +561,7 @@ def import_csvData_to_mysql(csv_fname):
 if __name__ == '__main__':
     # ##TODO: Choose type of operation
     opr_mode = 0 # 0 = INSERT(used only for the first time); 1 = SELECT & UPDATE existing data
-    csv_fname = '/home/tranks/scrapeBySelenium/webscraper_for_analytics/New_data.csv'
+    csv_fname = './New_data.csv'
     percentages_table = '1_indv_venue_analytics'
     overall_table = '0_overall_analytics'
     
